@@ -4,11 +4,28 @@ const xhr = new XMLHttpRequest()
 xhr.onreadystatechange = () => {
     if(xhr.readyState == 4 && xhr.status ==200){
         let resultaat = JSON.parse(xhr.responseText);
-        console.log(resultaat);
-     } else {
-         console.log("readystate: " + xhr.readyState);
-         console.log("status: " + xhr.state);
+        boeken.data = resultaat;
+        boeken.uitvoeren();
+     } 
+}
+xhr.open('GET', 'boeken.json', true);
+xhr.send();
+
+const boeken = {
+    
+    
+     uitvoeren(){
+        let html = "";
+        this.data.forEach( boek => {
+
+
+            let titel = "";
+            if ( boek.voortitel ) {
+                titel += boek.voortitel + " ";
+            }
+            titel += boek.titel;
+            html += `<h3>${titel}</h3>`;
+        });
+        uitvoer.innerHTML = html
      }
 }
-xhr.open('GET', 'boek.json', true);
-xhr.send();
