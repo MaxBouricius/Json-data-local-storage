@@ -19,12 +19,16 @@ const boeken = {
         this.data.forEach( boek => {
 
 
-            let titel = "";
+            let completeTitel = "";
             if ( boek.voortitel ) {
-                titel += boek.voortitel + " ";
+                completeTitel += boek.voortitel + " ";
             }
-            titel += boek.titel;
-            html += `<h3>${titel}</h3>`;
+            completeTitel += boek.titel;
+
+            html += `<section class="boek">`;
+            html += `<img class="boek__cover" src="${boek.cover}" alt="${completeTitel}">`
+            html += `<h3>${completeTitel}</h3>`;
+            html += `</section>`;
         });
         uitvoer.innerHTML = html
      }
