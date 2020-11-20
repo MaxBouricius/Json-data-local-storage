@@ -27,16 +27,18 @@ const boeken = {
 
 
             let auteurs = "";
-            boek.auteurs.forEach(schrijver => {
+            boek.auteurs.forEach((schrijver,index) => {
                 let tv = schrijver.tussenvoegsel ? schrijver.tussenvoegsel+" " : "";
-                let separator = " ";
+                let separator = ", ";
+                if(index >= boek.auteurs.length-2) { separator = " en ";}
+                if(index >= boek.auteurs.length-1) { separator = "";}
                 auteurs += schrijver.voornaam + " "  + tv + schrijver.achternaam + separator;
             })
 
             html += `<section class="boek">`;
             html += `<img class="boek__cover" src="${boek.cover}" alt="${completeTitel}">`
             html += `<h3 class="boek__kopje">${completeTitel}</h3>`;
-            html += `<p class="boek__auteurs">${auteurs}</p>`
+            html += `<p class="boek__auteurs">${auteurs}</p>`;
             html += `<span class="boek__uitgave"> ${boek.uitgave}</span>`;
             html += `<span class="boek__ean">ean${boek.ean}</span>`;
             html += `<span class="boek__paginas"> ${boek.paginas} pagina's</span>`;
