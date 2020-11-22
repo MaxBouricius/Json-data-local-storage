@@ -23,6 +23,7 @@ body{
     font-size: 2em;
     color: royalblue;
 }
-.besturing__select--label{
+.besturing__sorteren{
     float: right;
+    text-align: right;
 }
