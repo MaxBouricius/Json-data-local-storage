@@ -2,6 +2,8 @@ const uitvoer = document.getElementById('boeken');
 const xhr = new XMLHttpRequest();
 const taalKeuze = document.querySelectorAll('.besturing__cb-taal'); 
 
+const selectSort = document.querySelector('.besturing__select');
+
 xhr.onreadystatechange = () => {
     if(xhr.readyState == 4 && xhr.status ==200){
         let resultaat = JSON.parse(xhr.responseText);
@@ -32,7 +34,7 @@ const boeken = {
         if(this.es == 'titel') {this.data.sort( (a,b) => (a.titel.toUpperCase() > b.titel.toUpperCase() ) ? 1 : -1 );}
         else if (this.es == 'paginas') {this.data.sort( (a,b) => (a.paginas > b.paginas  ) ? 1 : -1 );}
         else if (this.es == 'uitgave') {this.data.sort( (a,b) => (a.uitgave > b.uitgave  ) ? 1 : -1 );}
-        else if (this.es == 'uitgave') {this.data.sort( (a,b) => (a.uitgave > b.uitgave  ) ? 1 : -1 );}
+        else if (this.es == 'prijs') {this.data.sort( (a,b) => (a.prijs > b.prijs  ) ? 1 : -1 );}
         else if (this.es == 'auteur') {this.data.sort( (a,b) => (a.auteurs[0].achternaam > b.auteurs[0].achternaam  ) ? 1 : -1 );}
     },
     
@@ -105,6 +107,13 @@ const pasFilterAan = () => {
     boeken.taalFilter = gecheckteTaalKeuze;
     boeken.filteren(JSON.parse(xhr.responseText));
     boeken.uitvoeren();
-}
+};
+
+const pasSortEigAan = () => {
+    boeken.es = selectSort.value;
+    boeken.uitvoeren();
+};
 
 taalKeuze.forEach( cb => cb.addEventListener('change', pasFilterAan));
+
+document.querySelector('.besturing__select').addEventListener('change', pasSortEigAan);
