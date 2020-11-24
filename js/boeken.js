@@ -29,6 +29,32 @@ const ww = {
     },
     dataOphalen(){
         this.bestelling = JSON.parse(localStorage.wwBestelling)
+        this.uitvoeren();
+    },
+    uitvoeren(){
+        
+
+        let html = `<table>`;
+        let totaal = 0;
+        this.bestelling.forEach( boek => {
+            let completeTitel = "";
+            if ( boek.voortitel ) {
+                completeTitel += boek.voortitel + " ";
+            }
+            completeTitel += boek.titel;
+            html += '<tr>';
+            html += `<td> <img src="${boek.cover}" alt="${completeTitel}" class="bestelformulier__cover"><td>`;
+            html += `<td> ${completeTitel}</td>`;
+            html += `<td> ${boek.prijs.toLocaleString('nl-NL', {currency: 'EUR', style: 'currency'})}</td>`;
+            html += '<tr>'
+            totaal += boek.prijs;
+        });
+        html += `<tr><td colspan="3">Totaal</td>
+            <td>${totaal.toLocaleString('nl-NL', {currency: 'EUR', style: 'currency'})}</td>
+            </tr>`;
+
+        html += '</table>';
+        document.getElementById('uitvoer').innerHTML = html;
         aantalInWinkelwagen.innerHTML = ww.bestelling.length;
     }
 }
