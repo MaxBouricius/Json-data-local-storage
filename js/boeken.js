@@ -23,7 +23,6 @@ const ww = {
             obj.besteldAantal ++;
             ww.bestelling.push(obj);
         } else{
-            
         gevonden[0].besteldAantal ++;
         }
         localStorage.wwBestelling = JSON.stringify(this.bestelling)
@@ -37,8 +36,6 @@ const ww = {
         this.uitvoeren();
     },
     uitvoeren(){
-        
-
         let html = `<table>`;
         let totaal = 0;
         let totaalBesteld = 0;
@@ -48,11 +45,13 @@ const ww = {
                 completeTitel += boek.voortitel + " ";
             }
             completeTitel += boek.titel;
+           
             html += '<tr>';
             html += `<td> <img src="${boek.cover}" alt="${completeTitel}" class="bestelformulier__cover"><td>`;
             html += `<td> ${completeTitel}</td>`;
             html += `<td> ${boek.besteldAantal}</td>`;
             html += `<td> ${boek.prijs.toLocaleString('nl-NL', {currency: 'EUR', style: 'currency'})}</td>`;
+            html += `<td><i class="fas fa-trash bestelformulier__trash" data-role="${boek.ean}"></i></td>`;
             html += '<tr>'
             totaal += boek.prijs * boek.besteldAantal;
             totaalBesteld += boek.besteldAantal;
@@ -64,6 +63,17 @@ const ww = {
         html += '</table>';
         document.getElementById('uitvoer').innerHTML = html;
         aantalInWinkelwagen.innerHTML = totaalBesteld;
+        this.trashActiveren();
+    },
+    trashActiveren(){
+        document.querySelectorAll('.bestelformulier__trash').forEach( trash => {
+            trash.addEventListener('click', e => {
+                let teVerwijderenBoekID = e.target.getAttribute('data-role');
+                this.bestelling = this.bestelling.filter( bk => bk.ean != teVerwijderenBoekID);
+                localStorage.wwBestelling = JSON.stringify(this.bestelling);
+                this.uitvoeren();
+            })
+        });
     }
 }
 
