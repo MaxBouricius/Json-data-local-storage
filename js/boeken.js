@@ -67,6 +67,36 @@ const ww = {
         document.getElementById('uitvoer').innerHTML = html;
         aantalInWinkelwagen.innerHTML = totaalBesteld;
         this.trashActiveren();
+        this.hogerLagerActiveren();
+    },
+    hogerLagerActiveren(){
+        let hogerKnoppen = document.querySelectorAll('.bestelformulier__verhoog');
+        hogerKnoppen.forEach(knop => {
+            knop.addEventListener('click', e => {
+                let ophoogID = e.target.getAttribute('data-role');
+                let opTeHogenBoek = this.bestelling.filter( boek => boek.ean == ophoogID);
+                opTeHogenBoek[0].besteldAantal ++;
+                localStorage.wwBestelling = JSON.stringify(this.bestelling);
+                this.uitvoeren();
+            })
+        })
+
+
+        let lagerKnoppen = document.querySelectorAll('.bestelformulier__verlaag');
+        lagerKnoppen.forEach(knop => {
+            knop.addEventListener('click', e => {
+                let verlaagID = e.target.getAttribute('data-role');
+                let opTeVerlagenAantal = this.bestelling.filter( boek => boek.ean == verlaagID);
+                if (opTeVerlagenAantal[0].bestelAantal>1){
+                    opTeVerlagenAantal[0].besteldAantal --;
+                } else {
+                    this.bestelling = this.bestelling.filter( bk => bk.ean != verlaagID);
+                }
+                localStorage.wwBestelling = JSON.stringify(this.bestelling);
+                this.uitvoeren();
+            })
+        })
+
     },
     trashActiveren(){
         document.querySelectorAll('.bestelformulier__trash').forEach( trash => {
@@ -76,7 +106,7 @@ const ww = {
                 localStorage.wwBestelling = JSON.stringify(this.bestelling);
                 this.uitvoeren();
             })
-        });
+        })
     }
 }
 
@@ -203,7 +233,8 @@ taalKeuze.forEach( cb => cb.addEventListener('change', pasFilterAan));
 
 selectSort.addEventListener('change', pasSortEigAan);
 
-document.querySelectorAll('.besturing__rb').forEach( rb => rb.addEventListener('change', () => {
-    boeken.oplopend = rb.value;
+
+document.querySelectorAll('.besturing__rb').forEach( rb => rb.addEventListener('change', () =>{
+    boeken.oplopend =rb.value;
     boeken.uitvoeren;
 }))
